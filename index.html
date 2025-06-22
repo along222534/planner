@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Intern Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-white p-6 max-w-4xl mx-auto font-sans">
+  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-1 rounded shadow">
+    🌙 สลับธีม
+  </button>
+
+  <h1 class="text-3xl font-bold mb-6 text-center">📝 บันทึกการฝึกงาน</h1>
+
+  <form id="log-form" class="flex flex-wrap gap-4 justify-center mb-6">
+    <label class="flex flex-col">
+      📅 วันที่:
+      <input type="date" id="date" required class="border rounded px-3 py-2 text-black"/>
+    </label>
+    <label class="flex flex-col">
+      📌 สถานะ:
+      <select id="status" required class="border rounded px-3 py-2 text-black">
+        <option value="">-- เลือก --</option>
+        <option value="ทำงาน">ทำงาน</option>
+        <option value="ลาตามแผน">ลาตามแผน</option>
+        <option value="ลาป่วย">ลาป่วย</option>
+        <option value="ลากิจ">ลากิจ</option>
+        <option value="หยุดพิเศษ">หยุดพิเศษ</option>
+        <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
+      </select>
+    </label>
+    <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">➕ เพิ่ม</button>
+  </form>
+
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">📋 รายการที่บันทึก</h2>
+    <div class="space-x-2">
+      <select id="filter-status" class="border px-2 py-1 rounded text-black">
+        <option value="all">ทั้งหมด</option>
+        <option value="ทำงาน">ทำงาน</option>
+        <option value="ลาตามแผน">ลาตามแผน</option>
+        <option value="ลาป่วย">ลาป่วย</option>
+        <option value="ลากิจ">ลากิจ</option>
+        <option value="หยุดพิเศษ">หยุดพิเศษ</option>
+        <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
+      </select>
+      <button id="download-json" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition">JSON</button>
+      <button id="download-csv" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition">CSV</button>
+    </div>
+  </div>
+
+  <table id="intern-table" class="min-w-full border-collapse border border-gray-300 dark:border-gray-700 shadow-sm">
+    <thead class="bg-gray-200 dark:bg-gray-800">
+      <tr>
+        <th class="border border-gray-300 p-2">วันที่</th>
+        <th class="border border-gray-300 p-2">สถานะ</th>
+        <th class="border border-gray-300 p-2">จัดการ</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
+  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded shadow"></div>
+
+  <h2 class="text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
+  <div class="flex justify-center gap-4 mb-2">
+    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded">◀ ก่อนหน้า</button>
+    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded">ถัดไป ▶</button>
+  </div>
+  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded shadow"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
