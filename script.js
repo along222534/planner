@@ -1,5 +1,6 @@
+// ตัวแปรเก็บข้อมูลและสถานะแก้ไข
 let internData = JSON.parse(localStorage.getItem("internData")) || [];
-let editingIndex = -1;
+let editingIndex = -1;  // -1 = ไม่ได้แก้ไข
 
 function saveData() {
   localStorage.setItem("internData", JSON.stringify(internData));
@@ -21,11 +22,13 @@ function renderTable() {
       "หยุดพิเศษ": "bg-blue-100 text-blue-700",
       "วันหยุดนักขัตฤกษ์": "bg-yellow-100 text-yellow-700",
     };
+    const statusClass = statusClassMap[item.status] || "";
+
     const row = document.createElement("tr");
     row.classList.add("transition-all", "hover:bg-gray-100");
     row.innerHTML = `
       <td class="p-2">${item.date}</td>
-      <td class="p-2 ${statusClassMap[item.status] || ""}">${item.status}</td>
+      <td class="p-2 ${statusClass}">${item.status}</td>
       <td class="p-2 space-x-1">
         <button data-index="${index}" class="edit-btn bg-yellow-400 hover:bg-yellow-500 text-black px-2 py-1 rounded">แก้ไข</button>
         <button data-index="${index}" class="delete-btn bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">ลบ</button>
@@ -34,16 +37,16 @@ function renderTable() {
     tableBody.appendChild(row);
   });
 
-  document.querySelectorAll(".delete-btn").forEach(btn =>
+  document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", e => {
       const idx = e.target.getAttribute("data-index");
       internData.splice(idx, 1);
       saveData();
       renderAll();
-    })
-  );
+    });
+  });
 
-  document.querySelectorAll(".edit-btn").forEach(btn =>
+  document.querySelectorAll(".edit-btn").forEach(btn => {
     btn.addEventListener("click", e => {
       const idx = e.target.getAttribute("data-index");
       const item = internData[idx];
@@ -51,12 +54,14 @@ function renderTable() {
       document.getElementById("status").value = item.status;
       editingIndex = idx;
       document.getElementById("log-form").scrollIntoView({ behavior: "smooth" });
-    })
-  );
+    });
+  });
 }
 
 function renderSummary() {
+  const hoursPerDay = 8.5;
   const summary = {};
+
   internData.forEach(item => {
     summary[item.status] = (summary[item.status] || 0) + 1;
   });
@@ -64,14 +69,15 @@ function renderSummary() {
   let html = '';
   for (const [status, count] of Object.entries(summary)) {
     if (status === 'ทำงาน') {
-      const hours = (count * 8.5).toFixed(1);
-      html += `<p>✔️ ${status}: ${count} วัน (${hours} ชม.)</p>`;
+      const workHours = (count * hoursPerDay).toFixed(1);
+      html += `<p>✔️ ${status}: ${count} วัน (${workHours} ชม.)</p>`;
     } else {
       html += `<p>📌 ${status}: ${count} วัน</p>`;
     }
   }
+  html += `<hr class="my-2" />`;
   if (summary["ทำงาน"]) {
-    html += `<hr class="my-2" /><p>🕒 <strong>ชั่วโมงทำงานรวม: ${(summary["ทำงาน"] * 8.5).toFixed(1)} ชม.</strong></p>`;
+    html += `<p>🕒 <strong>ชั่วโมงทำงานรวม: ${(summary["ทำงาน"] * hoursPerDay).toFixed(1)} ชม.</strong></p>`;
   }
 
   document.getElementById("summary-box").innerHTML = html;
@@ -85,29 +91,24 @@ function renderCalendar() {
   const today = new Date();
   const showMonth = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
 
+  const title = showMonth.toLocaleDateString('th-TH', { month: 'long', year: 'numeric' });
+  calEl.innerHTML += `<div class="text-center text-lg font-semibold mb-2">${title}</div>`;
+
   const firstDay = new Date(showMonth.getFullYear(), showMonth.getMonth(), 1);
   const lastDay = new Date(showMonth.getFullYear(), showMonth.getMonth() + 1, 0);
   const daysInMonth = lastDay.getDate();
-
-  const title = showMonth.toLocaleDateString('th-TH', { month: 'long', year: 'numeric' });
-  calEl.innerHTML += `<div class="text-center text-lg font-semibold mb-2">${title}</div>`;
 
   let html = '<div class="grid grid-cols-7 gap-1 text-center">';
   ['อา','จ','อ','พ','พฤ','ศ','ส'].forEach(d => {
     html += `<div class="font-semibold">${d}</div>`;
   });
 
-  const blankDays = (firstDay.getDay() + 7) % 7;
-  for (let i = 0; i < blankDays; i++) {
-    html += `<div class="p-3 min-h-[40px]"></div>`;
-  }
+  for (let i = 0; i < firstDay.getDay(); i++) html += '<div></div>';
 
   for (let d = 1; d <= daysInMonth; d++) {
     const dateObj = new Date(showMonth.getFullYear(), showMonth.getMonth(), d);
     const dateStr = dateObj.toLocaleDateString('en-CA');
-    const item = internData.find(i => i.date === dateStr);
-    const status = item?.status || "";
-
+    const status = internData.find(i => i.date === dateStr)?.status || "";
     const colorMap = {
       "ทำงาน": "bg-green-400",
       "ลาตามแผน": "bg-red-400",
@@ -117,36 +118,11 @@ function renderCalendar() {
       "วันหยุดนักขัตฤกษ์": "bg-yellow-300",
     };
     const statusColor = colorMap[status] || "bg-gray-200";
-
-    html += `
-      <div class="rounded p-2 sm:p-3 text-white text-xs sm:text-sm ${statusColor} min-h-[40px] flex items-center justify-center">
-        ${d}
-      </div>
-    `;
+    html += `<div class="rounded p-1 ${statusColor} text-white text-xs sm:text-sm">${d}</div>`;
   }
 
   html += '</div>';
   calEl.innerHTML += html;
-}
-
-
-function syncAllDataToGoogleSheets() {
-  if (internData.length === 0) return alert("ไม่มีข้อมูลให้ซิงก์");
-
-  let successCount = 0;
-  let failCount = 0;
-
-  Promise.all(internData.map(item =>
-    fetch("https://script.google.com/macros/s/AKfycbyIA_Wh_Spwmz2NSi2Gh0lkQwJdOU_47tGc-DJn-NN7-0U72bMXaXNfbqfZEX8N1rdw/exec", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(item)
-    })
-    .then(res => res.ok ? successCount++ : failCount++)
-    .catch(() => failCount++)
-  )).then(() => {
-    alert(`✅ ซิงก์เสร็จแล้ว: สำเร็จ ${successCount} / ล้มเหลว ${failCount}`);
-  });
 }
 
 function renderAll() {
@@ -155,14 +131,18 @@ function renderAll() {
   renderCalendar();
 }
 
-document.getElementById("log-form").addEventListener("submit", e => {
+document.getElementById("log-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const date = document.getElementById("date").value;
   const status = document.getElementById("status").value;
-  if (!date || !status) return alert("กรุณากรอกข้อมูลให้ครบ");
+
+  if (!date || !status) return alert("กรุณาเลือกวันที่และสถานะให้ครบ");
 
   const duplicateIndex = internData.findIndex(item => item.date === date);
-  if (editingIndex === -1 && duplicateIndex !== -1) return alert("📅 วันที่นี้มีข้อมูลอยู่แล้ว");
+  if (editingIndex === -1 && duplicateIndex !== -1) {
+    alert("📅 คุณได้บันทึกวันที่นี้ไปแล้ว!");
+    return;
+  }
 
   if (editingIndex >= 0) {
     internData[editingIndex] = { date, status };
@@ -174,39 +154,54 @@ document.getElementById("log-form").addEventListener("submit", e => {
   internData.sort((a, b) => new Date(a.date) - new Date(b.date));
   saveData();
   renderAll();
-  e.target.reset();
+  this.reset();
 });
 
 document.getElementById("filter-status").addEventListener("change", renderTable);
+
 document.getElementById("download-json").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(internData, null, 2)], { type: "application/json" });
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(internData, null, 2));
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "intern-data.json";
+  a.setAttribute("href", dataStr);
+  a.setAttribute("download", "intern-data.json");
+  document.body.appendChild(a);
   a.click();
+  a.remove();
 });
+
 document.getElementById("download-csv").addEventListener("click", () => {
   const header = ["วันที่", "สถานะ"];
   const rows = internData.map(d => [d.date, d.status]);
-  const csv = [header, ...rows].map(r => r.join(",")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
+  let csvContent = header.join(",") + "\n";
+  rows.forEach(r => {
+    csvContent += r.join(",") + "\n";
+  });
+  const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "intern-data.csv";
+  a.setAttribute("href", dataStr);
+  a.setAttribute("download", "intern-data.csv");
+  document.body.appendChild(a);
   a.click();
-});
-document.getElementById("prev-month").addEventListener("click", () => {
-  const cal = document.getElementById("simple-calendar");
-  cal.setAttribute("data-month-offset", Number(cal.getAttribute("data-month-offset") || 0) - 1);
-  renderCalendar();
-});
-document.getElementById("next-month").addEventListener("click", () => {
-  const cal = document.getElementById("simple-calendar");
-  cal.setAttribute("data-month-offset", Number(cal.getAttribute("data-month-offset") || 0) + 1);
-  renderCalendar();
-});
-document.getElementById("sync-google-sheets").addEventListener("click", () => {
-  if (confirm("คุณแน่ใจว่าต้องการซิงก์ข้อมูลเก่าไป Google Sheets?")) syncAllDataToGoogleSheets();
+  a.remove();
 });
 
+document.getElementById("prev-month").addEventListener("click", () => {
+  const calEl = document.getElementById("simple-calendar");
+  const currentOffset = Number(calEl.getAttribute("data-month-offset") || 0);
+  calEl.setAttribute("data-month-offset", currentOffset - 1);
+  renderCalendar();
+});
+
+document.getElementById("next-month").addEventListener("click", () => {
+  const calEl = document.getElementById("simple-calendar");
+  const currentOffset = Number(calEl.getAttribute("data-month-offset") || 0);
+  calEl.setAttribute("data-month-offset", currentOffset + 1);
+  renderCalendar();
+});
 renderAll();
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(() => console.log("✅ Service Worker registered"));
+  });
+}
