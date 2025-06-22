@@ -16,7 +16,6 @@ function renderTable() {
   filteredData.forEach((item, index) => {
     const statusClassMap = {
       "ทำงาน": "bg-green-100 text-green-700",
-      "ลาตามแผน": "bg-red-100 text-red-700",
       "ลาป่วย": "bg-pink-100 text-pink-700",
       "ลากิจ": "bg-purple-100 text-purple-700",
       "หยุดพิเศษ": "bg-blue-100 text-blue-700",
@@ -111,7 +110,6 @@ function renderCalendar() {
     const status = internData.find(i => i.date === dateStr)?.status || "";
     const colorMap = {
       "ทำงาน": "bg-green-400",
-      "ลาตามแผน": "bg-red-400",
       "ลาป่วย": "bg-pink-400",
       "ลากิจ": "bg-purple-400",
       "หยุดพิเศษ": "bg-blue-400",
