@@ -11,14 +11,14 @@
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-white p-6 max-w-4xl mx-auto font-sans">
-  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-1 rounded shadow">
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-white p-4 sm:p-6 max-w-4xl mx-auto font-sans">
+  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-1 rounded shadow text-sm sm:text-base">
     🌙 สลับธีม
   </button>
 
-  <h1 class="text-3xl font-bold mb-6 text-center">📝 บันทึกการฝึกงาน</h1>
+  <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center">📝 บันทึกการฝึกงาน</h1>
 
-  <form id="log-form" class="flex flex-wrap gap-4 justify-center mb-6">
+  <form id="log-form" class="grid sm:flex sm:flex-wrap gap-4 justify-center mb-6">
     <label class="flex flex-col">
       📅 วันที่:
       <input type="date" id="date" required class="border rounded px-3 py-2 text-black"/>
@@ -35,13 +35,13 @@
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
     </label>
-    <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">➕ เพิ่ม</button>
+    <button type="submit" class="bg-blue-600 text-white px-4 sm:px-5 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base">➕ เพิ่ม</button>
   </form>
 
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-semibold">📋 รายการที่บันทึก</h2>
-    <div class="space-x-2">
-      <select id="filter-status" class="border px-2 py-1 rounded text-black">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+    <h2 class="text-lg sm:text-xl font-semibold">📋 รายการที่บันทึก</h2>
+    <div class="space-x-1 sm:space-x-2">
+      <select id="filter-status" class="border px-2 py-1 rounded text-black text-sm sm:text-base">
         <option value="all">ทั้งหมด</option>
         <option value="ทำงาน">ทำงาน</option>
         <option value="ลาตามแผน">ลาตามแผน</option>
@@ -50,31 +50,33 @@
         <option value="หยุดพิเศษ">หยุดพิเศษ</option>
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
-      <button id="download-json" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition">JSON</button>
-      <button id="download-csv" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition">CSV</button>
+      <button id="download-json" class="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">JSON</button>
+      <button id="download-csv" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">CSV</button>
     </div>
   </div>
 
-  <table id="intern-table" class="min-w-full border-collapse border border-gray-300 dark:border-gray-700 shadow-sm">
-    <thead class="bg-gray-200 dark:bg-gray-800">
-      <tr>
-        <th class="border border-gray-300 p-2">วันที่</th>
-        <th class="border border-gray-300 p-2">สถานะ</th>
-        <th class="border border-gray-300 p-2">จัดการ</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2 class="text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
-  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded shadow"></div>
-
-  <h2 class="text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
-  <div class="flex justify-center gap-4 mb-2">
-    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded">◀ ก่อนหน้า</button>
-    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded">ถัดไป ▶</button>
+  <div class="overflow-x-auto">
+    <table id="intern-table" class="min-w-full border-collapse border border-gray-300 dark:border-gray-700 shadow-sm text-sm sm:text-base">
+      <thead class="bg-gray-200 dark:bg-gray-800">
+        <tr>
+          <th class="border border-gray-300 p-2">วันที่</th>
+          <th class="border border-gray-300 p-2">สถานะ</th>
+          <th class="border border-gray-300 p-2">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
-  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded shadow"></div>
+
+  <h2 class="text-lg sm:text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
+  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded shadow text-sm sm:text-base"></div>
+
+  <h2 class="text-lg sm:text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
+  <div class="flex justify-center gap-4 mb-2">
+    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base">◀ ก่อนหน้า</button>
+    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base">ถัดไป ▶</button>
+  </div>
+  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded shadow text-sm sm:text-base"></div>
 
   <script src="script.js"></script>
 </body>
