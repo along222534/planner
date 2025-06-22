@@ -10,24 +10,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
             sans: ['Prompt', 'sans-serif']
           },
           colors: {
-            lightbg: '#f9fafb',
-            darkbg: '#121212'
+            lightbg: '#f9fafb'
           }
         }
       }
     }
   </script>
 </head>
-<body class="bg-lightbg text-gray-700 dark:bg-darkbg dark:text-gray-200 p-4 sm:p-6 max-w-4xl mx-auto font-sans transition-colors duration-300">
-
-  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-1 rounded shadow text-sm sm:text-base transition-all">🌙 สลับธีม</button>
+<body class="bg-lightbg text-gray-700 p-4 sm:p-6 max-w-4xl mx-auto font-sans transition-colors duration-300">
 
   <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center">📝 บันทึกการฝึกงาน</h1>
 
@@ -69,8 +65,8 @@
   </div>
 
   <div class="overflow-x-auto">
-    <table id="intern-table" class="min-w-full border-collapse divide-y divide-gray-300 dark:divide-gray-600 shadow text-sm sm:text-base">
-      <thead class="bg-gray-100 dark:bg-gray-800">
+    <table id="intern-table" class="min-w-full border-collapse divide-y divide-gray-300 shadow text-sm sm:text-base">
+      <thead class="bg-gray-100">
         <tr>
           <th class="p-2 text-left">วันที่</th>
           <th class="p-2 text-left">สถานะ</th>
@@ -82,14 +78,14 @@
   </div>
 
   <h2 class="text-lg sm:text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
-  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
+  <div id="summary-box" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 
   <h2 class="text-lg sm:text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
   <div class="flex justify-center gap-4 mb-2">
     <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">◀ ก่อนหน้า</button>
     <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">ถัดไป ▶</button>
   </div>
-  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
+  <div id="simple-calendar" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 
   <script src="script.js"></script>
 </body>

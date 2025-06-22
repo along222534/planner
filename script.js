@@ -25,7 +25,7 @@ function renderTable() {
     const statusClass = statusClassMap[item.status] || "";
 
     const row = document.createElement("tr");
-    row.classList.add("transition-all", "hover:bg-gray-100", "dark:hover:bg-gray-700");
+    row.classList.add("transition-all", "hover:bg-gray-100");
     row.innerHTML = `
       <td class="p-2">${item.date}</td>
       <td class="p-2 ${statusClass}">${item.status}</td>
@@ -53,7 +53,7 @@ function renderTable() {
       document.getElementById("date").value = item.date;
       document.getElementById("status").value = item.status;
       editingIndex = idx;
-      document.getElementById("log-form").scrollIntoView({behavior: "smooth"});
+      document.getElementById("log-form").scrollIntoView({ behavior: "smooth" });
     });
   });
 }
@@ -117,7 +117,7 @@ function renderCalendar() {
       "หยุดพิเศษ": "bg-blue-400",
       "วันหยุดนักขัตฤกษ์": "bg-yellow-300",
     };
-    const statusColor = colorMap[status] || "bg-gray-200 dark:bg-gray-700";
+    const statusColor = colorMap[status] || "bg-gray-200";
     html += `<div class="rounded p-1 ${statusColor} text-white text-xs sm:text-sm">${d}</div>`;
   }
 
@@ -197,10 +197,6 @@ document.getElementById("next-month").addEventListener("click", () => {
   const currentOffset = Number(calEl.getAttribute("data-month-offset") || 0);
   calEl.setAttribute("data-month-offset", currentOffset + 1);
   renderCalendar();
-});
-
-document.getElementById("toggle-theme").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
 });
 
 renderAll();
