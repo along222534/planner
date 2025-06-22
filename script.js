@@ -198,5 +198,10 @@ document.getElementById("next-month").addEventListener("click", () => {
   calEl.setAttribute("data-month-offset", currentOffset + 1);
   renderCalendar();
 });
-
 renderAll();
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(() => console.log("✅ Service Worker registered"));
+  });
+}
