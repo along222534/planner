@@ -8,13 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="apple-touch-icon" href="icon-192.png" />
-<link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#4f46e5" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="Intern Tracker" />
-
   <script>
     tailwind.config = {
       theme: {
@@ -66,8 +59,9 @@
         <option value="หยุดพิเศษ">หยุดพิเศษ</option>
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
-      <button id="download-json" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">JSON</button>
-      <button id="download-csv" class="bg-sky-500 hover:bg-sky-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">CSV</button>
+      <button id="download-json" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded transition text-sm sm:text-base">JSON</button>
+      <button id="download-csv" class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-2 rounded transition text-sm sm:text-base">CSV</button>
+      <button id="sync-google-sheets" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm sm:text-base">ซิงก์ข้อมูลเก่าไป Google Sheets</button>
     </div>
   </div>
 
@@ -89,8 +83,8 @@
 
   <h2 class="text-lg sm:text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
   <div class="flex justify-center gap-4 mb-2">
-    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">◀ ก่อนหน้า</button>
-    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">ถัดไป ▶</button>
+    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm sm:text-base transition-all">◀ ก่อนหน้า</button>
+    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm sm:text-base transition-all">ถัดไป ▶</button>
   </div>
   <div id="simple-calendar" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 
