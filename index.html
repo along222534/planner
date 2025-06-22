@@ -5,27 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Intern Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'sans-serif']
+          },
+          colors: {
+            lightbg: '#f9fafb',
+            darkbg: '#121212'
+          }
+        }
+      }
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-white p-4 sm:p-6 max-w-4xl mx-auto font-sans">
-  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-1 rounded shadow text-sm sm:text-base">
-    🌙 สลับธีม
-  </button>
+<body class="bg-lightbg text-gray-700 dark:bg-darkbg dark:text-gray-200 p-4 sm:p-6 max-w-4xl mx-auto font-sans transition-colors duration-300">
+
+  <button id="toggle-theme" class="fixed top-4 right-4 bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-1 rounded shadow text-sm sm:text-base transition-all">🌙 สลับธีม</button>
 
   <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center">📝 บันทึกการฝึกงาน</h1>
 
   <form id="log-form" class="grid sm:flex sm:flex-wrap gap-4 justify-center mb-6">
-    <label class="flex flex-col">
+    <label class="flex flex-col text-sm sm:text-base">
       📅 วันที่:
-      <input type="date" id="date" required class="border rounded px-3 py-2 text-black"/>
+      <input type="date" id="date" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
     </label>
-    <label class="flex flex-col">
+    <label class="flex flex-col text-sm sm:text-base">
       📌 สถานะ:
-      <select id="status" required class="border rounded px-3 py-2 text-black">
+      <select id="status" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400">
         <option value="">-- เลือก --</option>
         <option value="ทำงาน">ทำงาน</option>
         <option value="ลาตามแผน">ลาตามแผน</option>
@@ -35,7 +48,7 @@
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
     </label>
-    <button type="submit" class="bg-blue-600 text-white px-4 sm:px-5 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base">➕ เพิ่ม</button>
+    <button type="submit" class="bg-indigo-500 text-white px-4 sm:px-5 py-2 rounded hover:scale-105 hover:bg-indigo-600 transition-all">➕ เพิ่ม</button>
   </form>
 
   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
@@ -50,18 +63,18 @@
         <option value="หยุดพิเศษ">หยุดพิเศษ</option>
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
-      <button id="download-json" class="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">JSON</button>
-      <button id="download-csv" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">CSV</button>
+      <button id="download-json" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">JSON</button>
+      <button id="download-csv" class="bg-sky-500 hover:bg-sky-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">CSV</button>
     </div>
   </div>
 
   <div class="overflow-x-auto">
-    <table id="intern-table" class="min-w-full border-collapse border border-gray-300 dark:border-gray-700 shadow-sm text-sm sm:text-base">
-      <thead class="bg-gray-200 dark:bg-gray-800">
+    <table id="intern-table" class="min-w-full border-collapse divide-y divide-gray-300 dark:divide-gray-600 shadow text-sm sm:text-base">
+      <thead class="bg-gray-100 dark:bg-gray-800">
         <tr>
-          <th class="border border-gray-300 p-2">วันที่</th>
-          <th class="border border-gray-300 p-2">สถานะ</th>
-          <th class="border border-gray-300 p-2">จัดการ</th>
+          <th class="p-2 text-left">วันที่</th>
+          <th class="p-2 text-left">สถานะ</th>
+          <th class="p-2 text-left">จัดการ</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -69,14 +82,14 @@
   </div>
 
   <h2 class="text-lg sm:text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
-  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded shadow text-sm sm:text-base"></div>
+  <div id="summary-box" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 
   <h2 class="text-lg sm:text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
   <div class="flex justify-center gap-4 mb-2">
-    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base">◀ ก่อนหน้า</button>
-    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base">ถัดไป ▶</button>
+    <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">◀ ก่อนหน้า</button>
+    <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">ถัดไป ▶</button>
   </div>
-  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded shadow text-sm sm:text-base"></div>
+  <div id="simple-calendar" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 
   <script src="script.js"></script>
 </body>
