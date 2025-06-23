@@ -50,6 +50,17 @@
         <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
       </select>
     </label>
+          <!-- ⏰ ชั่วโมงทำงาน (เฉพาะเมื่อเลือกสถานะเป็น "ทำงาน") -->
+<div id="hours-wrapper" class="flex flex-col text-sm sm:text-base hidden">
+  ⏰ ชั่วโมงทำงาน:
+  <select id="hours-select" class="border rounded px-3 py-2 text-black mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+    <option value="8.5">เต็มวัน (8.5 ชม.)</option>
+    <option value="4.5">ครึ่งวัน (4.5 ชม.)</option>
+    <option value="custom">ระบุเอง</option>
+  </select>
+  <input type="number" step="0.1" id="custom-hours" placeholder="กรอกชั่วโมง เช่น 6.5" class="mt-2 border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400 hidden" />
+</div>
+
     <button type="submit" class="bg-indigo-500 text-white px-4 sm:px-5 py-2 rounded hover:scale-105 hover:bg-indigo-600 transition-all">➕ เพิ่ม</button>
   </form>
 
@@ -94,6 +105,7 @@
   <div id="simple-calendar" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
 <script src="script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="hours.js"></script>
 
 </body>
 </html>
