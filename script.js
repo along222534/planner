@@ -1,6 +1,5 @@
-// ตัวแปรเก็บข้อมูลและสถานะแก้ไข
 let internData = JSON.parse(localStorage.getItem("internData")) || [];
-let editingIndex = -1;  // -1 = ไม่ได้แก้ไข
+let editingIndex = -1;
 
 function saveData() {
   localStorage.setItem("internData", JSON.stringify(internData));
@@ -82,6 +81,12 @@ function renderSummary() {
   document.getElementById("summary-box").innerHTML = html;
 }
 
+function formatDateLocal(dateObj) {
+  return dateObj.getFullYear() + '-' +
+    String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+    String(dateObj.getDate()).padStart(2, '0');
+}
+
 function renderCalendar() {
   const calEl = document.getElementById("simple-calendar");
   calEl.innerHTML = "";
@@ -106,7 +111,7 @@ function renderCalendar() {
 
   for (let d = 1; d <= daysInMonth; d++) {
     const dateObj = new Date(showMonth.getFullYear(), showMonth.getMonth(), d);
-    const dateStr = dateObj.toLocaleDateString('en-CA');
+    const dateStr = formatDateLocal(dateObj);
     const status = internData.find(i => i.date === dateStr)?.status || "";
     const colorMap = {
       "ทำงาน": "bg-green-400",
@@ -170,7 +175,7 @@ document.getElementById("download-json").addEventListener("click", () => {
 document.getElementById("download-csv").addEventListener("click", () => {
   const header = ["วันที่", "สถานะ"];
   const rows = internData.map(d => [d.date, d.status]);
-  let csvContent = header.join(",") + "\n";
+  let csvContent = '\uFEFF' + header.join(",") + "\n";
   rows.forEach(r => {
     csvContent += r.join(",") + "\n";
   });
@@ -196,7 +201,9 @@ document.getElementById("next-month").addEventListener("click", () => {
   calEl.setAttribute("data-month-offset", currentOffset + 1);
   renderCalendar();
 });
+
 renderAll();
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js")
