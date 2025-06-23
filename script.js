@@ -210,3 +210,53 @@ if ("serviceWorker" in navigator) {
       .then(() => console.log("✅ Service Worker registered"));
   });
 }
+document.getElementById("download-pdf").addEventListener("click", () => {
+  const element = document.createElement("div");
+  element.style.padding = "20px";
+  element.style.fontFamily = "Prompt, sans-serif";
+
+  // 🧾 หน้า 1: รายการที่บันทึก
+  let html = `<h2 style="font-size:20px; font-weight:bold; text-align:center;">📋 รายงานบันทึกการฝึกงาน</h2>`;
+  html += `<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse; width:100%; margin-top:10px;">`;
+  html += `<thead><tr><th>วันที่</th><th>สถานะ</th></tr></thead><tbody>`;
+
+  internData.forEach(item => {
+    html += `<tr><td>${item.date}</td><td>${item.status}</td></tr>`;
+  });
+
+  html += `</tbody></table>`;
+
+  // 🧾 หน้า 2: สรุป
+  const hoursPerDay = 8.5;
+  const summary = {};
+  internData.forEach(item => {
+    summary[item.status] = (summary[item.status] || 0) + 1;
+  });
+
+  html += `<div style="page-break-before: always;"></div>`;
+  html += `<h2 style="font-size:20px; font-weight:bold;">📊 สรุป</h2><ul style="margin-top:10px;">`;
+
+  for (const [status, count] of Object.entries(summary)) {
+    if (status === 'ทำงาน') {
+      html += `<li>${status}: ${count} วัน (${(count * hoursPerDay).toFixed(1)} ชม.)</li>`;
+    } else {
+      html += `<li>${status}: ${count} วัน</li>`;
+    }
+  }
+
+  html += `</ul>`;
+
+  element.innerHTML = html;
+
+  html2pdf()
+    .from(element)
+    .set({
+      margin: 10,
+      filename: 'intern-report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    })
+    .save();
+});
+
