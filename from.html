@@ -1,0 +1,78 @@
+<!-- ===== ระบบฟอร์มบันทึกการฝึกงาน ===== -->
+
+<form id="log-form" class="grid sm:flex sm:flex-wrap gap-4 justify-center mb-6">
+  <label class="flex flex-col text-sm sm:text-base">
+    🗕️ วันที่:
+    <input type="date" id="date" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
+  </label>
+  <label class="flex flex-col text-sm sm:text-base">
+    📌 สถานะ:
+    <select id="status" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400">
+      <option value="">-- เลือก --</option>
+      <option value="ทำงาน">ทำงาน</option>
+      <option value="ลาป่วย">ลาป่วย</option>
+      <option value="ลากิจ">ลากิจ</option>
+      <option value="หยุดพิเศษ">หยุดพิเศษ</option>
+      <option value="วันหยุดนักขัตฤภ์">วันหยุดนักขัตฤภ์</option>
+    </select>
+  </label>
+  <div id="hours-wrapper" class="flex flex-col text-sm sm:text-base hidden">
+    ⏰ ชั่วโมงทำงาน:
+    <select id="hours-select" class="border rounded px-3 py-2 text-black mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+      <option value="8.5">เต็มวัน (8.5 ชม.)</option>
+      <option value="4.5">ครึ่งวัน (4.5 ชม.)</option>
+      <option value="custom">ระบุเอง</option>
+    </select>
+    <input type="number" step="0.1" id="custom-hours" placeholder="กรอกชั่วโมง เช่น 6.5" class="mt-2 border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400 hidden" />
+  </div>
+  <button type="submit" class="bg-indigo-500 text-white px-4 sm:px-5 py-2 rounded hover:scale-105 hover:bg-indigo-600 transition-all">➕ เพิ่ม</button>
+</form>
+
+<!-- ===== ปุ่มตัวกรองและดาวน์โหลด ===== -->
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+  <h2 class="text-lg sm:text-xl font-semibold">📋 รายการที่บันทึก</h2>
+  <div class="space-x-1 sm:space-x-2">
+    <select id="filter-status" class="border px-2 py-1 rounded text-black text-sm sm:text-base">
+      <option value="all">ทั้งหมด</option>
+      <option value="ทำงาน">ทำงาน</option>
+      <option value="ลาป่วย">ลาป่วย</option>
+      <option value="ลากิจ">ลากิจ</option>
+      <option value="หยุดพิเศษ">หยุดพิเศษ</option>
+      <option value="วันหยุดนักขัตฤภ์">วันหยุดนักขัตฤภ์</option>
+    </select>
+    <button id="download-json" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">JSON</button>
+    <button id="download-csv" class="bg-sky-500 hover:bg-sky-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">CSV</button>
+    <button id="download-pdf" class="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded transition text-sm sm:text-base">PDF</button>
+  </div>
+</div>
+
+<!-- ===== ตารางรายการ ===== -->
+<div class="overflow-x-auto">
+  <table id="intern-table" class="min-w-full border-collapse divide-y divide-gray-300 shadow text-sm sm:text-base">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="p-2 text-left">วันที่</th>
+        <th class="p-2 text-left">สถานะ</th>
+        <th class="p-2 text-left">จัดการ</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- ===== สรุป ===== -->
+<h2 class="text-lg sm:text-xl font-semibold mt-8 mb-2">📊 สรุป</h2>
+<div id="summary-box" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
+
+<!-- ===== ปฏิทิน ===== -->
+<h2 class="text-lg sm:text-xl font-semibold mt-10 mb-4">📅 ปฏิทิน</h2>
+<div class="flex justify-center gap-4 mb-2">
+  <button id="prev-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">◀ ก่อนหน้า</button>
+  <button id="next-month" class="bg-gray-400 hover:bg-gray-500 text-white px-3 sm:px-4 py-1 rounded text-sm sm:text-base transition-all">ถัดไป ▶</button>
+</div>
+<div id="simple-calendar" class="bg-white p-4 rounded-xl shadow text-sm sm:text-base transition-all"></div>
+
+<!-- ===== Script ===== -->
+<script src="script.js" type="module"></script>
+<script src="hours.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
