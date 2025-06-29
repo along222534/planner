@@ -3,18 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Intern Tracker</title>
+  <title>เข้าสู่ระบบ - Intern Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#4f46e5" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Intern Tracker" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -30,98 +21,37 @@
     }
   </script>
 </head>
-<body class="bg-lightbg text-gray-700 p-4 sm:p-6 max-w-4xl mx-auto font-sans transition-colors duration-300">
+<body class="bg-lightbg text-gray-700 p-4 font-sans text-center flex flex-col items-center justify-center h-screen">
+  <h1 class="text-3xl font-bold mb-6">📌 Intern Tracker</h1>
+  <button id="login-btn" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
+    🔐 เข้าสู่ระบบด้วย Google
+  </button>
 
-  <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-center">📜 บันทึกการฝึกงาน</h1>
-
-  <form id="log-form" class="grid sm:flex sm:flex-wrap gap-4 justify-center mb-6">
-    <label class="flex flex-col text-sm sm:text-base">
-      🗕️ วันที่:
-      <input type="date" id="date" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
-    </label>
-    <label class="flex flex-col text-sm sm:text-base">
-      📌 สถานะ:
-      <select id="status" required class="border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400">
-        <option value="">-- เลือก --</option>
-        <option value="ทำงาน">ทำงาน</option>
-        <option value="ลาป่วย">ลาป่วย</option>
-        <option value="ลากิจ">ลากิจ</option>
-        <option value="หยุดพิเศษ">หยุดพิเศษ</option>
-        <option value="วันหยุดนักขัตฤภ์">วันหยุดนักขัตฤภ์</option>
-      </select>
-    </label>
-    <div id="hours-wrapper" class="flex flex-col text-sm sm:text-base hidden">
-      ⏰ ชั่วโมงทำงาน:
-      <select id="hours-select" class="border rounded px-3 py-2 text-black mt-1 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-        <option value="8.5">เต็มวัน (8.5 ชม.)</option>
-        <option value="4.5">ครึ่งวัน (4.5 ชม.)</option>
-        <option value="custom">ระบุเอง</option>
-      </select>
-      <input type="number" step="0.1" id="custom-hours" placeholder="กรอกชั่วโมง เช่น 6.5" class="mt-2 border rounded px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-400 hidden" />
-    </div>
-    <button type="submit" class="bg-indigo-500 text-white px-4 sm:px-5 py-2 rounded hover:scale-105 hover:bg-indigo-600 transition-all">➕ เพิ่ม</button>
-  </form>
-
-  <!-- (ส่วนอื่น ๆ เหมือนเดิม) -->
-
-  <script src="script.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="hours.js"></script>
   <script type="module">
-  // นำเข้า Firebase SDK
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, query, where, getDocs, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
-    authDomain: "intern-tracker-cdb37.firebaseapp.com",
-    projectId: "intern-tracker-cdb37",
-    storageBucket: "intern-tracker-cdb37.appspot.com",
-    messagingSenderId: "840811604344",
-    appId: "1:840811604344:web:270c72348d26d96d3b5ceb",
-    measurementId: "G-MF85HBPX5"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
+      authDomain: "intern-tracker-cdb37.firebaseapp.com",
+      projectId: "intern-tracker-cdb37",
+      storageBucket: "intern-tracker-cdb37.appspot.com",
+      messagingSenderId: "840811604344",
+      appId: "1:840811604344:web:270c72348d26d96d3b5ceb",
+      measurementId: "G-MF85HBPX5"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
-  const db = getFirestore(app);
-  const provider = new GoogleAuthProvider();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
-  const loginBtn = document.createElement("button");
-  loginBtn.textContent = "🔐 เข้าสู่ระบบด้วย Google";
-  loginBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded block mx-auto mt-10";
-  loginBtn.addEventListener("click", () => signInWithPopup(auth, provider));
-  document.body.innerHTML = ""; // ล้างเนื้อหาเดิมก่อนแสดงปุ่ม
+    document.getElementById("login-btn").addEventListener("click", () => signInWithPopup(auth, provider));
 
-  onAuthStateChanged(auth, user => {
-  if (user) {
-    const uid = user.uid;
-    const userEmail = user.email;
-
-    // แสดงข้อความต้อนรับ + ปุ่มออกจากระบบ
-    document.body.innerHTML = `<div class="text-right mb-4">
-      👋 ยินดีต้อนรับ ${userEmail}
-      <button id="logout-btn" class="ml-4 bg-red-500 text-white px-3 py-1 rounded">ออกจากระบบ</button>
-    </div>` + document.body.innerHTML;
-
-    document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
-
-    // โหลด form.html แล้วเชื่อม Firestore
-    fetch("form.html")
-      .then(res => res.text())
-      .then(html => {
-        document.body.insertAdjacentHTML("beforeend", html);
-        import("./script.js").then(module => {
-          module.initFirestore(uid, db);  // <-- เรียกฟังก์ชันที่อยู่ใน script.js
-        });
-      });
-
-  } else {
-    document.body.appendChild(loginBtn);
-  }
-});
-</script>
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        window.location.href = "form.html";
+      }
+    });
+  </script>
 </body>
 </html>

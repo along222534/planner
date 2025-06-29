@@ -1,5 +1,4 @@
-// ✅ แทนที่ script.js ด้วยโค้ดนี้ (ใช้ Firestore แทน localStorage และแยกตาม UID)
-
+// script.js
 import { collection, query, where, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let internData = [];
@@ -22,7 +21,7 @@ export function initFirestore(uid, db) {
   document.getElementById("hours-select").addEventListener("change", toggleCustomHours);
 }
 
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
   const date = document.getElementById("date").value;
   const status = document.getElementById("status").value;
@@ -42,15 +41,20 @@ function submitForm(e) {
   const data = { uid: currentUID, date, status };
   if (status === "ทำงาน") data.hours = hours;
 
-  if (editingId) {
-    updateDoc(doc(dbRef, editingId), data);
-    editingId = null;
-  } else {
-    addDoc(dbRef, data);
+  try {
+    if (editingId) {
+      await updateDoc(doc(dbRef, editingId), data);
+      editingId = null;
+      alert("แก้ไขข้อมูลสำเร็จ");
+    } else {
+      await addDoc(dbRef, data);
+      alert("เพิ่มข้อมูลสำเร็จ");
+    }
+    e.target.reset();
+    toggleHourInput();
+  } catch (error) {
+    alert("เกิดข้อผิดพลาด: " + error.message);
   }
-
-  e.target.reset();
-  toggleHourInput();
 }
 
 function toggleHourInput() {
@@ -102,8 +106,7 @@ function renderTable() {
   const tableBody = document.querySelector("#intern-table tbody");
   tableBody.innerHTML = "";
 
-  const selectedFilter = document.getElementById("filter-status")?.value || "all";
-  const filteredData = internData.filter(item => selectedFilter === "all" || item.status === selectedFilter);
+  const filteredData = internData; // กรองถ้าต้องการเพิ่ม filter ได้
 
   filteredData.forEach(item => {
     const statusClassMap = {
@@ -208,7 +211,6 @@ function renderAll() {
   renderCalendar();
 }
 
-// เพิ่มปุ่มเลื่อนเดือน (ใช้ได้เลย)
 document.getElementById("prev-month").addEventListener("click", () => {
   const calEl = document.getElementById("simple-calendar");
   const currentOffset = Number(calEl.getAttribute("data-month-offset") || 0);
