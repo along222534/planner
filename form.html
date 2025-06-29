@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Intern Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -22,7 +22,6 @@
   </script>
 </head>
 <body class="bg-lightbg text-gray-700 p-4 sm:p-6 max-w-4xl mx-auto font-sans transition-colors duration-300">
-
   <div class="text-right mb-4 p-4">
     <span id="user-email"></span>
     <button id="logout-btn" class="ml-4 bg-red-500 text-white px-3 py-1 rounded">ออกจากระบบ</button>
@@ -43,7 +42,7 @@
         <option value="ลาป่วย">ลาป่วย</option>
         <option value="ลากิจ">ลากิจ</option>
         <option value="หยุดพิเศษ">หยุดพิเศษ</option>
-        <option value="วันหยุดนักขัตฤกษ์">วันหยุดนักขัตฤกษ์</option>
+        <option value="วันหยุดนักขัตฤภ์">วันหยุดนักขัตฤภ์</option>
       </select>
     </label>
     <div id="hours-wrapper" class="flex flex-col text-sm sm:text-base hidden">
@@ -58,16 +57,8 @@
     <button type="submit" class="bg-indigo-500 text-white px-4 sm:px-5 py-2 rounded hover:scale-105 hover:bg-indigo-600 transition-all">➕ เพิ่ม</button>
   </form>
 
-  <div id="summary-box" class="mb-6"></div>
-
-  <div id="simple-calendar" class="mb-2" data-month-offset="0"></div>
-
-  <div class="flex justify-center gap-4 mb-6">
-    <button id="prev-month" class="bg-indigo-400 text-white px-3 py-1 rounded hover:bg-indigo-500">‹ เดือนก่อน</button>
-    <button id="next-month" class="bg-indigo-400 text-white px-3 py-1 rounded hover:bg-indigo-500">เดือนถัดไป ›</button>
-  </div>
-
-  <div class="overflow-x-auto">
+  <!-- ✅ ตารางอยู่ก่อน -->
+  <div class="overflow-x-auto mb-6">
     <table id="intern-table" class="table-auto w-full border text-sm">
       <thead>
         <tr class="bg-gray-200">
@@ -80,17 +71,21 @@
     </table>
   </div>
 
-  <div id="loading" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center text-white text-xl hidden">
-    กำลังโหลดข้อมูล...
+  <!-- ✅ สรุปผล -->
+  <div id="summary-box" class="mb-6"></div>
+
+  <!-- ✅ ปุ่มเลื่อนเดือนและปฏิทินอยู่ล่างสุด -->
+  <div class="flex justify-center items-center gap-4 mb-2">
+    <button id="prev-month" class="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400">⬅️ เดือนก่อน</button>
+    <button id="next-month" class="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400">เดือนถัดไป ➡️</button>
   </div>
+  <div id="simple-calendar" class="mb-6" data-month-offset="0"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    import { initFirestore } from "./script.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -106,26 +101,18 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    function showLoading(show) {
-      document.getElementById("loading").classList.toggle("hidden", !show);
-    }
-
-    showLoading(true);
     onAuthStateChanged(auth, user => {
       if (user) {
         document.getElementById("user-email").textContent = `👋 ยินดีต้อนรับ ${user.email}`;
-        initFirestore(user.uid, db);
-        showLoading(false);
+        import("./script.js").then(module => {
+          module.initFirestore(user.uid, db);
+        });
       } else {
         window.location.href = "index.html";
       }
     });
 
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      signOut(auth).then(() => {
-        window.location.href = "index.html";
-      });
-    });
+    document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
   </script>
 </body>
 </html>
