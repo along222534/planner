@@ -5,31 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>เข้าสู่ระบบ - Intern Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'sans-serif']
-          },
-          colors: {
-            lightbg: '#f9fafb'
-          }
-        }
-      }
-    }
-  </script>
 </head>
-<body class="bg-lightbg text-gray-700 p-4 font-sans text-center flex flex-col items-center justify-center h-screen">
-  <h1 class="text-3xl font-bold mb-6">📌 Intern Tracker</h1>
-  <button id="login-btn" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
-    🔐 เข้าสู่ระบบด้วย Google
-  </button>
+<body class="bg-gray-100 text-gray-800 p-6 font-sans flex items-center justify-center min-h-screen">
+  <div class="text-center space-y-4">
+    <h1 class="text-2xl font-bold">🔐 เข้าสู่ระบบฝึกงาน</h1>
+    <button id="login-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      🔑 Sign in with Google
+    </button>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -37,20 +24,24 @@
       projectId: "intern-tracker-cdb37",
       storageBucket: "intern-tracker-cdb37.appspot.com",
       messagingSenderId: "840811604344",
-      appId: "1:840811604344:web:270c72348d26d96d3b5ceb",
-      measurementId: "G-MF85HBPX5"
+      appId: "1:840811604344:web:270c72348d26d96d3b5ceb"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    document.getElementById("login-btn").addEventListener("click", () => signInWithPopup(auth, provider));
-
+    // ถ้า login ค้างอยู่แล้ว → ไปหน้า form.html
     onAuthStateChanged(auth, user => {
       if (user) {
         window.location.href = "form.html";
       }
+    });
+
+    document.getElementById("login-btn").addEventListener("click", () => {
+      signInWithPopup(auth, provider)
+        .then(() => window.location.href = "form.html")
+        .catch(err => alert("เกิดข้อผิดพลาด: " + err.message));
     });
   </script>
 </body>
