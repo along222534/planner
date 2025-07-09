@@ -33,7 +33,13 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithRedirect,
+      GoogleAuthProvider,
+      onAuthStateChanged,
+      getRedirectResult
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -48,6 +54,17 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
+
+    // ✅ ดึงผลจาก redirect กลับมา
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          window.location.href = "form.html";
+        }
+      })
+      .catch((error) => {
+        console.error("Login redirect error:", error.message);
+      });
 
     onAuthStateChanged(auth, user => {
       if (user) {
