@@ -3,7 +3,7 @@
   "short_name": "Intern",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#f9fafb",
+  "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "icons": [
     {
