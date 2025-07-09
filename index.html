@@ -33,7 +33,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -56,9 +56,7 @@
     });
 
     document.getElementById("login-btn").addEventListener("click", () => {
-      signInWithPopup(auth, provider).catch(error => {
-        alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
-      });
+      signInWithRedirect(auth, provider);
     });
   </script>
 
