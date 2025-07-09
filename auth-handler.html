@@ -1,0 +1,40 @@
+<!-- auth-handler.html -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>กำลังเข้าสู่ระบบ...</title>
+</head>
+<body>
+  <p>กำลังโหลด...</p>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
+      authDomain: "intern-tracker-cdb37.firebaseapp.com",
+      projectId: "intern-tracker-cdb37",
+      storageBucket: "intern-tracker-cdb37.appspot.com",
+      messagingSenderId: "840811604344",
+      appId: "1:840811604344:web:270c72348d26d96d3b5ceb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    getRedirectResult(auth)
+      .then(result => {
+        if (result && result.user) {
+          window.location.href = "form.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      })
+      .catch(error => {
+        alert("❌ Error: " + error.message);
+        window.location.href = "index.html";
+      });
+  </script>
+</body>
+</html>

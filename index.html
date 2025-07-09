@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -5,41 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>เข้าสู่ระบบ - Intern Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Web App Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#4f46e5" />
-
-  <!-- Apple (iPhone) Support -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Intern Tracker" />
   <link rel="apple-touch-icon" href="icon-512.png" />
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: 'Prompt', sans-serif; }
-  </style>
 </head>
-<body class="bg-gray-100 text-gray-800 p-6 min-h-screen flex items-center justify-center">
-
-  <div class="bg-white rounded-lg shadow-lg p-6 text-center max-w-md w-full">
-    <h1 class="text-2xl font-bold mb-4">🔐 เข้าสู่ระบบ</h1>
-    <button id="login-btn" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
-      Sign in with Google
-    </button>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <div class="bg-white shadow p-6 rounded text-center">
+    <h1 class="text-xl font-bold mb-4">🔐 เข้าสู่ระบบ</h1>
+    <button id="login-btn" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Sign in with Google</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      signInWithRedirect,
-      GoogleAuthProvider,
-      onAuthStateChanged,
-      getRedirectResult
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -47,35 +28,20 @@
       projectId: "intern-tracker-cdb37",
       storageBucket: "intern-tracker-cdb37.appspot.com",
       messagingSenderId: "840811604344",
-      appId: "1:840811604344:web:270c72348d26d96d3b5ceb",
-      measurementId: "G-MF85HBPX5"
+      appId: "1:840811604344:web:270c72348d26d96d3b5ceb"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    // ✅ ดึงผลจาก redirect กลับมา
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          window.location.href = "form.html";
-        }
-      })
-      .catch((error) => {
-        console.error("Login redirect error:", error.message);
-      });
-
     onAuthStateChanged(auth, user => {
-      if (user) {
-        window.location.href = "form.html";
-      }
+      if (user) window.location.href = "form.html";
     });
 
     document.getElementById("login-btn").addEventListener("click", () => {
       signInWithRedirect(auth, provider);
     });
   </script>
-
 </body>
 </html>
