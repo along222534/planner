@@ -27,7 +27,14 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
+      GoogleAuthProvider,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCAZTafP3ERjkmyxtt9SoHxKI4TUzFyX8U",
@@ -43,16 +50,36 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    // ✅ สำคัญมาก: redirect result (กรณี PWA หรือ iPhone ใช้ redirect)
+    getRedirectResult(auth)
+      .then(result => {
+        if (result?.user) {
+          window.location.href = "form.html";
+        }
+      })
+      .catch(error => {
+        console.error("Redirect error:", error);
+      });
+
+    // ✅ ถ้า login อยู่แล้ว ให้ redirect
     onAuthStateChanged(auth, user => {
       if (user) {
         window.location.href = "form.html";
       }
     });
 
+    // ✅ เลือกใช้ popup หรือ redirect ตามอุปกรณ์
     document.getElementById("login-btn").addEventListener("click", () => {
-      signInWithPopup(auth, provider).catch(error => {
-        alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
-      });
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (isStandalone) {
+        // iPhone หรือแอป PWA ใช้ redirect
+        signInWithRedirect(auth, provider);
+      } else {
+        // คอมฯ และเบราว์เซอร์ใช้ popup
+        signInWithPopup(auth, provider).catch(error => {
+          alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
+        });
+      }
     });
   </script>
 </body>
