@@ -1,13 +1,14 @@
 // service-worker.js
 self.addEventListener("install", event => {
-  console.log("[ServiceWorker] Installed");
-  self.skipWaiting();
+  self.skipWaiting(); // บังคับให้ใช้เวอร์ชันใหม่ทันที
+  console.log("[SW] Installed");
 });
 
 self.addEventListener("activate", event => {
-  console.log("[ServiceWorker] Activated");
+  clients.claim(); // ให้ควบคุมทุก tab ทันที
+  console.log("[SW] Activated");
 });
 
 self.addEventListener("fetch", event => {
-  // ใช้ในอนาคตสำหรับ caching
+  // ไม่ cache อะไรไว้เลย เพื่อลดปัญหาเวอร์ชัน
 });

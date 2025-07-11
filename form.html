@@ -113,6 +113,16 @@
     });
 
     document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
+
+    onAuthStateChanged(auth, user => {
+  if (user) {
+    // โหลดข้อมูลจาก Firestore
+  } else {
+    window.location.href = "index.html"; // redirect กลับทันทีถ้าหมด session
+  }
+});
+
+  
   </script>
 </body>
 </html>
